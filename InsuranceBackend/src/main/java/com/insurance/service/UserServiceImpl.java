@@ -68,7 +68,16 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public ApiResponse deleteUser(long userId) {
-		return null;
+		User user = userRepository.findUserById(userId);
+		if (user != null)
+		{
+			userRepository.DeleteUser(userId);
+			return new ApiResponse(200, "SUCCESS", user);
+		}
+		else
+		{
+			return new ApiResponse(400, "FAILED", null);
+		}
 	}
 
 	public ApiResponse updatePassword(String email, String newPassword) {
@@ -83,7 +92,7 @@ public class UserServiceImpl implements UserService {
 	public ApiResponse findByEmail(String email) {
 		User user = userRepository.findByEmail(email);
 		if (user != null) {
-			return new ApiResponse(200, "User Fetched", user);
+			return new ApiResponse(200, "User Fetched by email", user);
 		}
 		return new ApiResponse(404, "No user found", null);
 	}
